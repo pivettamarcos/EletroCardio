@@ -200,7 +200,7 @@ void* imprime_resultados(){
 	
 	if(flag_completo){
 		for(z = 0; z < NUM_RESULTADOS_COMPLETOS; z++){
-			printf("%d | SENSOR %d X SENSOR %d - RESULTADO : %d\n", z, resultados[z][1], resultados[z][2], resultados[z][0]);
+			printf("%d | SENSOR %d X SENSOR %d - RESULTADO : %d\n", z, resultados[z][1] + 1, resultados[z][2] + 1, resultados[z][0]);
 			if(z%2 != 0 && z != 0){
 				printf("-----------------------------------------------------------\n");
 				sleep(1);
