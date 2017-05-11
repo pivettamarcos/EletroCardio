@@ -7,7 +7,7 @@
 #include <string.h>
 
 #define NUM_SENSORES 6
-#define NUM_RESULTADOS_COMPLETOS 10000
+#define NUM_RESULTADOS_COMPLETOS 24
 #define NUM_RESULTADOS_SUMARIZADOS 10
 
 bool flag_completo = false;
@@ -73,12 +73,12 @@ int main(void){
 }
 
 void mostra_opcoes_iniciais(){
-	printf("Você deseja ver os resultados de maneira completa? S/N\n");
+	printf("VocÃª deseja ver os resultados de maneira completa? S/N\n");
 	char resposta;
 	resposta = getchar();
 
 	while(resposta != 'S' && resposta != 'N'){
-		printf("Caracter inválido, insira S ou N\n");
+		printf("Caracter invÃ¡lido, insira S ou N\n");
 		resposta = getchar();
 	}
 	if(resposta == 'S')
@@ -105,7 +105,7 @@ void* thread_coleta(void *arg){
 
 	struct input *entrada = arg;
 
-	//INICIO SEÇÃO CRÍTICA
+	//INICIO SEÃ‡ÃƒO CRÃTICA
 	
 	pthread_mutex_lock(&mutex);	
 
@@ -113,7 +113,7 @@ void* thread_coleta(void *arg){
 
 	pthread_mutex_unlock(&mutex);
 
-	//FIM SEÇÃO CRÍTICA
+	//FIM SEÃ‡ÃƒO CRÃTICA
 
 	if(cont_pos >= NUM_RESULTADOS_COMPLETOS){
 		sumarizador();
@@ -153,7 +153,7 @@ void sumarizador(){
 	}
 	
 	for(x = 0; x < NUM_RESULTADOS_SUMARIZADOS; x++){
-		if(cont_pares != 0)
+		if(cont_pares[x] != 0)
 			resultados_sumarizados[x] = medias[x]/cont_pares[x];
 	}
 }
@@ -197,18 +197,21 @@ void gera_estado_aleatorio(){
 
 void* imprime_resultados(){
 	printf("\n\n=======================================================================\n\n");
-
-	for(x = 0; x < NUM_RESULTADOS_SUMARIZADOS; x++){
-		printf("|Sensores %s - RESULTADO: %.2Lf\n", nome_sensores[x], resultados_sumarizados[x]);
-	}
 	
 	if(flag_completo){
 		for(z = 0; z < NUM_RESULTADOS_COMPLETOS; z++){
 			printf("%d | SENSOR %d X SENSOR %d - RESULTADO : %d\n", z, resultados[z][1], resultados[z][2], resultados[z][0]);
-			if(z%2 != 0 && z != 0)
+			if(z%2 != 0 && z != 0){
 				printf("-----------------------------------------------------------\n");
+				sleep(1);
+			}
 		}
 	}
+
+	for(x = 0; x < NUM_RESULTADOS_SUMARIZADOS; x++){
+		printf("|Sensores %s - RESULTADO: %.2Lf\n", nome_sensores[x], resultados_sumarizados[x]);
+	}
+	sleep(2);
 
 	printf("\n=======================================================================\n\n");
 	
